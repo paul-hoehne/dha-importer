@@ -19,7 +19,7 @@ apply plugin: 'groovy'
 apply plugin: 'application'
 apply plugin: 'spring-boot'
 
-
+mainClassName = "mil.dha.health.dveivr.Ingest"
 
 sourceCompatibility = 1.8
 
