@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost/phoehne"
+    username: "phoehne"
+    password: "phoehne"
+
+sql:
+  patients: |
+               SELECT P.patient_id, P.first_name, P.middle_name, P.last_name,
+               P.oef_oif_ind, P.birth_date, P.death_date, G.name AS GENDER,
+               E.name AS ETHNICITY, M.name AS MARITALSTATUS, R.name AS RACE,
+               S.name AS SERVICEBRANCH, P.zip_plus_4, P.lastserviceseparationdate,
+               P.enrollment_date, P.edipn, SR.name AS SERVICE_STATUS,
+               L.name AS LIVING_ARANGEMENTS, P.unit, P.occupation,
+               P.job_description, MS.name AS MILITARY_STATUS, P."CATEGORY",
+               P.suffix
+               FROM patient P LEFT JOIN std_gender G ON P.std_gender_id = G.id
+                LEFT JOIN std_ethnicity E ON P.std_ethnicity_id = E.id
+                LEFT JOIN std_maritalstatus M ON P.std_maritalstatus_id = M.id
+                LEFT JOIN STD_RACE R ON P.std_race_id = R.id
+                LEFT JOIN std_service_branch S ON P.std_servicebranch_id = S.id
+                LEFT JOIN std_service_status SR ON P.std_service_status_id = SR.id
+                LEFT JOIN std_living_arrangements_type L ON P.std_living_arrangements_type_id = L.id
+                LEFT JOIN std_military_status_type MS ON P.std_military_status_type_id = MS.ID
+               ORDER BY patient_id
+               LIMIT 5000
+sqlxml:
+  patients: |
+               select XMLELEMENT(NAME "patients",
+                 XMLAGG(
+                     XMLELEMENT(NAME "patient",
+                       XMLELEMENT(NAME "patientId",          p.patient_id),
+                       XMLELEMENT(NAME "firstName",          p.first_name),
+                       XMLELEMENT(NAME "lastname",           p.last_name),
+                       XMLELEMENT(NAME "middleName",         p.middle_name),
+                       XMLELEMENT(NAME "oefOifInd",          p.oef_oif_ind),
+                       XMLELEMENT(NAME "birthDate",          p.birth_date),
+                       XMLELEMENT(NAME "deathDate",          p.death_date),
+                       XMLELEMENT(NAME "gender",             g.name),
+                       XMLELEMENT(NAME "ethnicity",          e.name),
+                       XMLELEMENT(NAME "maritalStatus",      m.name),
+                       XMLELEMENT(NAME "race",               r.name),
+                       XMLELEMENT(NAME "serviceBranch",      s.name),
+                       XMLELEMENT(NAME "zipPlusFour",        p.zip_plus_4),
+                       XMLELEMENT(NAME "lastServiceSeparationDate", p.lastserviceseparationdate),
+                       XMLELEMENT(NAME "enrollmentDate",     p.enrollment_date),
+                       XMLELEMENT(NAME "edipn",              p.edipn),
+                       XMLELEMENT(NAME "serviceStatus",      sr.name),
+                       XMLELEMENT(NAME "livingArangements",  l.name),
+                       XMLELEMENT(NAME "unit",               p.unit),
+                       XMLELEMENT(NAME "occupation",         p.occupation),
+                       XMLELEMENT(NAME "jobDescription",     p.job_description),
+                       XMLELEMENT(NAME "militaryStatus",     ms.name),
+                       XMLELEMENT(NAME "category",           p."CATEGORY"),
+                       XMLELEMENT(NAME "suffix",             p.suffix)
+                     )
+                 )
+               )
+               FROM patient P LEFT JOIN std_gender G ON P.std_gender_id = G.id
+               LEFT JOIN std_ethnicity E ON P.std_ethnicity_id = E.id
+               LEFT JOIN std_maritalstatus M ON P.std_maritalstatus_id = M.id
+               LEFT JOIN STD_RACE R ON P.std_race_id = R.id
+               LEFT JOIN std_service_branch S ON P.std_servicebranch_id = S.id
+               LEFT JOIN std_service_status SR ON P.std_service_status_id = SR.id
+               LEFT JOIN std_living_arrangements_type L ON P.std_living_arrangements_type_id = L.id
+               LEFT JOIN std_military_status_type MS ON P.std_military_status_type_id = MS.ID
+               GROUP BY p.patient_id
+                 order by p.patient_id
+               LIMIT 5000

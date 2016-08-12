@@ -1,0 +1,75 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+    }
+}
+
+plugins {
+    id "com.marklogic.ml-gradle" version "2.2.0"
+}
+
+group 'mil.dha.vce'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'application'
+apply plugin: 'spring-boot'
+
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+
+    // Needed for mlcp dependencies
+    maven { url "https://developer.marklogic.com/maven2/" }
+
+    // Needed for hadoop dependencies for mlcp
+    maven { url "http://repository.cloudera.com/artifactory/cloudera-repos/" }
+}
+
+
+configurations {
+    mlcp
+}
+
+dependencies {
+    mlcp "com.marklogic:mlcp:8.0-5"
+    mlcp "org.apache.commons:commons-csv:1.2"
+    mlcp files("libs")
+
+    compile 'org.springframework.boot:spring-boot-starter:1.4.0.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-jdbc:1.4.0.RELEASE'
+    compile 'org.postgresql:postgresql:9.4.1209.jre7'
+    compile name: 'sqljdbc4'
+    compile 'org.codehaus.groovy:groovy:2.4.7'
+    compile 'org.codehaus.groovy:groovy-xml:2.4.7'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+/**
+ * Example of using MlcpTask to import data with mlcp.
+ */
+task importPatientsDoc(type: com.marklogic.gradle.task.MlcpTask) {
+    classpath = configurations.mlcp
+    command = "IMPORT"
+    port               = 8700
+    database = mlAppConfig.contentDatabaseName
+    input_file_path = "data"
+    input_file_type = "delimited_text"
+    input_file_pattern = "patient_documents\\.csv"
+    output_collections = "patients"
+    output_permissions = "rest-reader,read,rest-writer,update"
+    output_uri_prefix = "/patients/"
+    delimited_uri_id = "patient_id"
+    args = ["-output_uri_suffix", ".xml", "-transform_module", "/ext/transforms/transform-patient.xqy",
+            "-transform_namespace", "http://marklogic.com/dha/example/transform-patient"]
+}
