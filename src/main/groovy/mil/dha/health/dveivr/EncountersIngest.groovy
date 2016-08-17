@@ -71,8 +71,6 @@ public class EncountersIngest {
 
             XMLWriteHandle xmlWriteHandle = new StringHandle(stringWriter.toString())
 
-
-            xmlDocumentManager.write()
             xmlDocumentManager.write(
                     String.format("/patients/%s.xml", p.patientId),
                     documentMetadataHandle,
