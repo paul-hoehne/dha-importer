@@ -16,9 +16,9 @@ logging:
 transform:
   xquery: |
             xquery version "1.0-ml";
-            import module namespace t="http://marklogic.com/dha/example/transform-patient" at "/ext/transforms/transform-patient.xqy";
+            import module namespace t="http://vision.dha.mil/lib/patient.xqy" at "/ext/lib/patient.xqy";
             declare variable $uri as xs:string external;
-            t:transform(map:new((map:entry("uri", $uri), map:entry("value", fn:doc($uri)))), map:new(()))
+            t:transform($uri)
 
 sql:
   patients: |
