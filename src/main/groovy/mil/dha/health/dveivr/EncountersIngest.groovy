@@ -19,8 +19,10 @@ public class EncountersIngest {
     @Value('${sql.patients}')
     String patientSql
 
-    @Value('${transform.xquery')
-    String xquery;
+    String xquery = 'xquery version \"1.0-ml\"; ' +
+        'import module namespace t=\"http://vision.dha.mil/lib/patient.xqy\" at \"/ext/lib/patient.xqy\"; ' +
+        'declare variable $uri as xs:string external; ' +
+        't:transform($uri)'
 
     @Autowired
     JdbcTemplate jdbcTemplate

@@ -15,8 +15,8 @@ logging:
 
 transform:
   xquery: |
-            xquery version "1.0-ml";
-            import module namespace t="http://vision.dha.mil/lib/patient.xqy" at "/ext/lib/patient.xqy";
+            xquery version \"1.0-ml\";
+            import module namespace t=\"http://vision.dha.mil/lib/patient.xqy\" at \"/ext/lib/patient.xqy\";
             declare variable $uri as xs:string external;
             t:transform($uri)
 
