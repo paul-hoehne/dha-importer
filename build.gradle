@@ -50,6 +50,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter'
     compile 'org.springframework.boot:spring-boot-starter-batch'
     compile 'org.springframework.boot:spring-boot-starter-jdbc'
+    compile 'org.springframework.boot:spring-boot-starter-logging'
     compile 'com.marklogic:java-client-api:3.0.1'
     compile 'org.postgresql:postgresql:9.4.1209.jre7'
     compile name: 'sqljdbc4'

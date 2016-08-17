@@ -10,6 +10,9 @@ ml:
   username: phoehne
   password: gl27d93j
 
+logging:
+  level: DEBUG
+
 sql:
   patients: |
                SELECT P.patient_id, P.first_name, P.middle_name, P.last_name,

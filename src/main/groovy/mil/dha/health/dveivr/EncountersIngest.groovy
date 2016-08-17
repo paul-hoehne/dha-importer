@@ -1,21 +1,15 @@
 package mil.dha.health.dveivr
 
 import com.marklogic.client.DatabaseClient
-import com.marklogic.client.DatabaseClientFactory
 import com.marklogic.client.document.XMLDocumentManager
-import com.marklogic.client.io.DOMHandle
 import com.marklogic.client.io.DocumentMetadataHandle
 import com.marklogic.client.io.StringHandle
 import com.marklogic.client.io.marker.XMLWriteHandle
 import groovy.xml.MarkupBuilder
-import groovy.xml.XmlUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
-
-import javax.sql.DataSource
-
 
 @Component("encountersIngest")
 public class EncountersIngest {
