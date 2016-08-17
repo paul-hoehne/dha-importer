@@ -31,7 +31,7 @@ class PatientRowMapper implements RowMapper<Patient> {
         patient.enrollmentDate = rs.getDate("enrollment_date")
         patient.edipn = rs.getString("edipn")
         patient.serviceStatus = rs.getString("SERVICE_STATUS")
-        patient.livingArrangements = rs.getString("LIVING_ARRANGEMENTS")
+        patient.livingArrangements = rs.getString("LIVING_ARANGEMENTS")
         patient.unit = rs.getString("unit")
         patient.occupation = rs.getString("occupation")
         patient.jobDescription = rs.getString("job_description")
