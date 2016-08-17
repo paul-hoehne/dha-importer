@@ -13,6 +13,13 @@ ml:
 logging:
   level: DEBUG
 
+transform:
+  xquery: |
+            xquery version "1.0-ml";
+            import module namespace t="http://marklogic.com/dha/example/transform-patient" at "/ext/transforms/transform-patient.xqy";
+            declare variable $uri as xs:string external;
+            t:transform(map:new((map:entry("uri", $uri), map:entry("value", fn:doc($uri)))), map:new(()))
+
 sql:
   patients: |
                SELECT P.patient_id, P.first_name, P.middle_name, P.last_name,

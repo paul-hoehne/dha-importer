@@ -1,7 +1,9 @@
 package mil.dha.health.dveivr
 
 import com.marklogic.client.DatabaseClient
+import com.marklogic.client.document.ServerTransform
 import com.marklogic.client.document.XMLDocumentManager
+import com.marklogic.client.eval.ServerEvaluationCall
 import com.marklogic.client.io.DocumentMetadataHandle
 import com.marklogic.client.io.StringHandle
 import com.marklogic.client.io.marker.XMLWriteHandle
@@ -16,6 +18,9 @@ public class EncountersIngest {
 
     @Value('${sql.patients}')
     String patientSql
+
+    @Value('${transform.xquery')
+    String xquery;
 
     @Autowired
     JdbcTemplate jdbcTemplate
@@ -66,11 +71,18 @@ public class EncountersIngest {
 
             XMLWriteHandle xmlWriteHandle = new StringHandle(stringWriter.toString())
 
+
+            xmlDocumentManager.write()
             xmlDocumentManager.write(
                     String.format("/patients/%s.xml", p.patientId),
                     documentMetadataHandle,
                     xmlWriteHandle
             )
+
+            ServerEvaluationCall sec = databaseClient.newServerEval()
+            sec.xquery(xquery)
+            sec.addVariable("uri", String.format('/patients/%s.xml', p.patientId))
+            sec.eval()
         }
     }
 }
