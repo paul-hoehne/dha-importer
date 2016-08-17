@@ -1,5 +1,12 @@
 package mil.dha.health.dveivr
 
+import com.marklogic.client.DatabaseClient
+import com.marklogic.client.DatabaseClientFactory
+import com.marklogic.client.document.XMLDocumentManager
+import com.marklogic.client.io.DOMHandle
+import com.marklogic.client.io.DocumentMetadataHandle
+import com.marklogic.client.io.StringHandle
+import com.marklogic.client.io.marker.XMLWriteHandle
 import groovy.xml.MarkupBuilder
 import groovy.xml.XmlUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,12 +26,15 @@ public class EncountersIngest {
     @Autowired
     JdbcTemplate jdbcTemplate
 
+    @Autowired
+    DatabaseClient databaseClient
+
     public void run() {
         List<Patient> patients = jdbcTemplate.query(patientSql, new PatientRowMapper())
         for(Patient p : patients) {
-            FileWriter fileWriter = new FileWriter(String.format("patient%d.xml", p.patientId))
+            StringWriter stringWriter = new StringWriter()
 
-            MarkupBuilder markupBuilder = new MarkupBuilder(fileWriter);
+            MarkupBuilder markupBuilder = new MarkupBuilder(stringWriter);
 
             def patient = markupBuilder.patient() {
                 patientId(p.patientId.toString())
@@ -53,8 +63,20 @@ public class EncountersIngest {
                 suffix(p.suffix)
             }
 
-            fileWriter.flush()
-            fileWriter.close()
+            XMLDocumentManager xmlDocumentManager = databaseClient.newXMLDocumentManager()
+
+            DocumentMetadataHandle documentMetadataHandle = new DocumentMetadataHandle()
+            documentMetadataHandle.getCollections().addAll("patient")
+            documentMetadataHandle.getPermissions().add("rest-reader", DocumentMetadataHandle.Capability.READ)
+            documentMetadataHandle.getPermissions().add("rest-writer", DocumentMetadataHandle.Capability.UPDATE)
+
+            XMLWriteHandle xmlWriteHandle = new StringHandle(stringWriter.toString())
+
+            xmlDocumentManager.write(
+                    String.format("/patients/{0}.xml", p.patientId),
+                    documentMetadataHandle,
+                    xmlWriteHandle
+            )
         }
     }
 }
