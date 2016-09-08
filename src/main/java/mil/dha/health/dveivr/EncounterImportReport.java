@@ -8,6 +8,21 @@ class EncounterImportReport {
     private boolean success;
     private String log;
 
+    public EncounterImportReport() {
+
+    }
+
+    public EncounterImportReport(String encounterId, boolean success) {
+        this.encounterId = encounterId;
+        this.success = success;
+    }
+
+    public EncounterImportReport(String encounterId, boolean success, String log) {
+        this.encounterId = encounterId;
+        this.success = success;
+        this.log = log;
+    }
+
     public String getEncounterId() {
         return encounterId;
     }

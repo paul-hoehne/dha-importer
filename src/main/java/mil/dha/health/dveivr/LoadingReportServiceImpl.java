@@ -67,10 +67,13 @@ class LoadingReportServiceImpl implements LoadingReportService {
         jacksonDatabindHandle.set(loadingReport);
 
         DocumentMetadataHandle documentMetadataHandle = new DocumentMetadataHandle();
-        documentMetadataHandle.getCollections().addAll("loading-report");
-        documentMetadataHandle.getPermissions().add("dha-user", DocumentMetadataHandle.Capability.READ, DocumentMetadataHandle.Capability.UPDATE);
+        documentMetadataHandle.getCollections().addAll("loader-report");
+        documentMetadataHandle.getPermissions().add("rest-reader", DocumentMetadataHandle.Capability.READ);
+        documentMetadataHandle.getPermissions().add("rest-writer", DocumentMetadataHandle.Capability.READ, DocumentMetadataHandle.Capability.UPDATE);
 
-        jdm.write("/loading-report/" + loadingReport.getReportId().toString() + ".json", documentMetadataHandle, jacksonDatabindHandle);
+        String reportUri = String.format("/loading-report/%s.json", loadingReport.getReportId().toString());
+
+        jdm.write(reportUri, documentMetadataHandle, jacksonDatabindHandle);
     }
 
     @Override

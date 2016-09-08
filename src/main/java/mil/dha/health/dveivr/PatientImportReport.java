@@ -17,6 +17,19 @@ class PatientImportReport {
         encounterImportReportList = new LinkedList<>();
     }
 
+    public PatientImportReport(String patientId, boolean success) {
+        encounterImportReportList = new LinkedList<>();
+        this.patientId = patientId;
+        this.patientSuccess = success;
+    }
+
+    public PatientImportReport(String patientId, boolean success, String log) {
+        encounterImportReportList = new LinkedList<>();
+        this.patientId = patientId;
+        this.patientSuccess = success;
+        this.log = log;
+    }
+
     public String getPatientId() {
         return patientId;
     }

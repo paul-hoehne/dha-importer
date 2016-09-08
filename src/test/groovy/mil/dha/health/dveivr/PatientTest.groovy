@@ -3,8 +3,6 @@ package mil.dha.health.dveivr
 import groovy.xml.MarkupBuilder
 import org.junit.Test
 
-import java.beans.XMLEncoder
-
 /**
  * Created by phoehne on 8/12/16.
  */
