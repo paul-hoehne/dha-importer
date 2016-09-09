@@ -19,7 +19,7 @@ public class EncounterRowMapper implements RowMapper<Encounter> {
         encounter.setVisitDate(rs.getDate("visit_date"));
         encounter.setChiefComplaintText(rs.getString("chief_complaint_text"));
         encounter.setTbiIndicator(rs.getString("tbi_ind"));
-        encounter.setTbiReadProblemIndicator(rs.getString("tbi_read_problem_ind"));
+        encounter.setTbiReadProblemIndicator(rs.getString("tbi_read_prblm_ind"));
         encounter.setTbiDiplopiaIndicator(rs.getString("tbi_diplopia_imd"));
         encounter.setTbiDazzinglIndicator(rs.getString("tbi_dazzling_ind"));
         encounter.setTbiPhotophobiaIndicator(rs.getString("tbi_photophobia_ind"));
@@ -32,7 +32,7 @@ public class EncounterRowMapper implements RowMapper<Encounter> {
         encounter.setTbiBlurredVisionIndicator(rs.getString("tbi_blurred_vision_ind"));
         encounter.setPrimaryClinicStopDescription(rs.getString("primaryclinicstopdesc"));
         encounter.setPrimaryClinckStop(rs.getString("primaryclinicstop"));
-        encounter.setFollowup(rs.getString("followup"));
+        encounter.setFollowup(rs.getString("follow_up"));
         encounter.setDuplicate(rs.getString("duplicate"));
         encounter.setHistoryOfPresentIllnessText(rs.getString("history_of_present_illness_text"));
         encounter.setStandardMaritalStatus(rs.getString("MARITALSTATUS"));

@@ -42,12 +42,12 @@ sql:
                LIMIT 5000
   encounters: |
                 SELECT E.referral_id, E.provider_id, E.sta6a, E.visit_date, E.chief_complaint_text,
-                   E.tbi_ind, E.tbi_read_problem_ind, E.tbi_diplopia_ind, E.tbi_dazzling_ind,
+                   E.tbi_ind, E.tbi_read_prblm_ind, E.tbi_diplopia_ind, E.tbi_dazzling_ind,
                    E.tbi_photophobia_ind, E.other_neurological_ind, E.neurological_comment_text,
                    E.diagnosis_summary_comment_text, E.procedure_summary_comment_text,
                    E.currently_hospitalized_ind, E.tbi_eye_strain_ind, E.tbi_blurred_vision_ind,
-                   E.primaryclinicstopdesc, E.primaryclinicstop, E.followup, E.duplicate,
-                   E.std_encounter_type_id, E.history_of_present_illness_text,
+                   E.primaryclinicstopdesc, E.primaryclinicstop, E.follow_up, E.duplicate,
+                   E.std_encounter_type_id,
                    M.name AS MARITALSTATUS, S.name AS SERVICEBRANCH, SR.name SERVICE_STATUS,
                    ED.occupation, ED.job_description
                 FROM encounter_demographics ED LEFT JOIN encounter E on ED.encounter_id = E.encounter_id
@@ -55,6 +55,7 @@ sql:
                    LEFT JOIN std_service_branch S ON ED.std_servicebranch_id = S.id
                    LEFT JOIN std_service_status SR ON ED.std_service_status_id = SR.id
                 WHERE ED.patient_id = ?
+
 
 
 sqlxml:
