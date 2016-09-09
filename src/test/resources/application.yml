@@ -15,8 +15,8 @@ logging:
 
 transform:
   xquery: |
-            xquery version "1.0-ml";
-            import module namespace t="http://vision.dha.mil/lib/patient.xqy" at "/ext/lib/patient.xqy";
+            xquery version \"1.0-ml\";
+            import module namespace t=\"http://vision.dha.mil/lib/patient.xqy\" at \"/ext/lib/patient.xqy\";
             declare variable $uri as xs:string external;
             t:transform($uri)
 
@@ -28,7 +28,7 @@ sql:
                S.name AS SERVICEBRANCH, P.zip_plus_4, P.lastserviceseparationdate,
                P.enrollment_date, P.edipn, SR.name AS SERVICE_STATUS,
                L.name AS LIVING_ARANGEMENTS, P.unit, P.occupation,
-               P.job_description, MS.name AS MILITARY_STATUS, P.CATEGORY,
+               P.job_description, MS.name AS MILITARY_STATUS, P."CATEGORY",
                P.suffix
                FROM patient P LEFT JOIN std_gender G ON P.std_gender_id = G.id
                 LEFT JOIN std_ethnicity E ON P.std_ethnicity_id = E.id
@@ -40,23 +40,6 @@ sql:
                 LEFT JOIN std_military_status_type MS ON P.std_military_status_type_id = MS.ID
                ORDER BY patient_id
                LIMIT 5000
-  encounters: |
-                SELECT E.referral_id, E.provder_id, E.sta6a, E.visit_date, E.chief_complaint_text,
-                   E.tbi_ind, E.tbi_read_problem_ind, E.tbi_diplopia_ind, E.tbi_dazzling_ind,
-                   E.tbi_photophobia_ind, E.other_neurological_ind, E.neurological_comment_text,
-                   E.diagnosis_summary_comment_text, E.procedure_summary_comment_text,
-                   E.current_hospitalized_ind, E.tbi_eye_strain_ind, E.tbi_blurred_vision_ind,
-                   E.primaryclinicstopdesc, E.primaryclinicstop, E.followup, E.duplicate,
-                   E.std_encounter_type_id, E.history_of_present_illness_text,
-                   M.name AS MARITALSTATUS, S.name AS SERVICEBRANCH, SR.name SERVICE_STATUS,
-                   ED.occupation, ED.job_description
-                FROM encounter_demographics ED LEFT JOIN encounters E on ED.encounter_id = E.encounter_id
-                   LEFT JOIN std_maritalstatus M ON ED.std_maritalstatus_id = M.id
-                   LEFT JOIN std_service_branch S ON ED.std_servicebranch_id = S.id
-                   LEFT JOIN std_service_status SR ON ED.std_service_status_id = SR.id
-                WHERE ED.patient_id = ?
-
-
 sqlxml:
   patients: |
                select XMLELEMENT(NAME "patients",

@@ -15,6 +15,8 @@ class LoadingReport {
     private UUID reportId;
     private Date completedDate;
     private Date cutoffTime;
+    private boolean success;
+    private String log;
     private List<PatientImportReport> importReports;
 
     public LoadingReport() {
@@ -51,5 +53,21 @@ class LoadingReport {
 
     public void setImportReports(List<PatientImportReport> importReports) {
         this.importReports = importReports;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
     }
 }
