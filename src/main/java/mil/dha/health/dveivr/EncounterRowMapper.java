@@ -27,7 +27,7 @@ public class EncounterRowMapper implements RowMapper<Encounter> {
         encounter.setNeurologicalCommentText(rs.getString("neurological_comment_text"));
         encounter.setDiagnosisSummaryCommentText(rs.getString("diagnosis_summary_comment_text"));
         encounter.setProcedureSummaryCommentText(rs.getString("procedure_summary_comment_text"));
-        encounter.setCurrentlyHospitalizedIndicator(rs.getString("current_hospitalized_ind"));
+        encounter.setCurrentlyHospitalizedIndicator(rs.getString("currently_hospitalized_ind"));
         encounter.setTbiEyeStrainIndicator(rs.getString("tbi_eye_strain_ind"));
         encounter.setTbiBlurredVisionIndicator(rs.getString("tbi_blurred_vision_ind"));
         encounter.setPrimaryClinicStopDescription(rs.getString("primaryclinicstopdesc"));
