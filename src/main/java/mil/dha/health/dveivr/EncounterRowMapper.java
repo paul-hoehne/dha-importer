@@ -20,7 +20,7 @@ public class EncounterRowMapper implements RowMapper<Encounter> {
         encounter.setChiefComplaintText(rs.getString("chief_complaint_text"));
         encounter.setTbiIndicator(rs.getString("tbi_ind"));
         encounter.setTbiReadProblemIndicator(rs.getString("tbi_read_prblm_ind"));
-        encounter.setTbiDiplopiaIndicator(rs.getString("tbi_diplopia_imd"));
+        encounter.setTbiDiplopiaIndicator(rs.getString("tbi_diplopia_ind"));
         encounter.setTbiDazzinglIndicator(rs.getString("tbi_dazzling_ind"));
         encounter.setTbiPhotophobiaIndicator(rs.getString("tbi_photophobia_ind"));
         encounter.setTbiOtherNeurologicalIndicator(rs.getString("other_neurological_ind"));
