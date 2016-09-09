@@ -8,7 +8,7 @@ import java.sql.SQLException;
 /**
  * Map patient source query to fields in patient object
  */
-class PatientRowMapper implements RowMapper<Patient> {
+public class PatientRowMapper implements RowMapper<Patient> {
 
     @Override
     public Patient mapRow(ResultSet rs, int rowNum) throws SQLException {

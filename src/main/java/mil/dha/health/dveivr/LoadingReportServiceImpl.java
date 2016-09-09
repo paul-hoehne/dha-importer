@@ -15,7 +15,7 @@ import java.io.IOException;
  * Service to return the latest report of loaded data.
  */
 @Service("loadingReportService")
-class LoadingReportServiceImpl implements LoadingReportService {
+public class LoadingReportServiceImpl implements LoadingReportService {
 
     private DatabaseClient databaseClient;
 

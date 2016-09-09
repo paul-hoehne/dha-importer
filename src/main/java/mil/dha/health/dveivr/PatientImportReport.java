@@ -1,14 +1,16 @@
 package mil.dha.health.dveivr;
 
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * This logs what happend when trying to import patient data.
  */
-class PatientImportReport {
-    private String patientId;
+public class PatientImportReport {
+    private int patientId;
     private List<EncounterImportReport> encounterImportReportList;
     private boolean patientSuccess;
     private String log;
@@ -17,24 +19,42 @@ class PatientImportReport {
         encounterImportReportList = new LinkedList<>();
     }
 
-    public PatientImportReport(String patientId, boolean success) {
+    public PatientImportReport(int patientId, boolean success) {
         encounterImportReportList = new LinkedList<>();
         this.patientId = patientId;
         this.patientSuccess = success;
     }
 
-    public PatientImportReport(String patientId, boolean success, String log) {
+    public PatientImportReport(int patientId, boolean success, String log) {
         encounterImportReportList = new LinkedList<>();
         this.patientId = patientId;
         this.patientSuccess = success;
         this.log = log;
     }
 
-    public String getPatientId() {
+    public EncounterImportReport startEncounterImport(int encounterId) {
+        EncounterImportReport encounterImportReport = new EncounterImportReport();
+        encounterImportReport.setEncounterId(encounterId);
+        encounterImportReportList.add(encounterImportReport);
+        return encounterImportReport;
+    }
+
+    public void logException(Throwable t) {
+        this.setPatientSuccess(false);
+
+        StringWriter stringWriter = new StringWriter();
+        stringWriter.write(t.getMessage());
+        stringWriter.write("\n");
+
+        t.printStackTrace(new PrintWriter(stringWriter));
+        this.setLog(stringWriter.toString());
+    }
+
+    public int getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(String patientId) {
+    public void setPatientId(int patientId) {
         this.patientId = patientId;
     }
 

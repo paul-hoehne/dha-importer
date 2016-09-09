@@ -8,7 +8,7 @@ import java.sql.SQLException;
 /**
  * Maps an encounter SQL Result to an encounter document.
  */
-class EncounterRowMapper implements RowMapper<Encounter> {
+public class EncounterRowMapper implements RowMapper<Encounter> {
     @Override
     public Encounter mapRow(ResultSet rs, int rowNum) throws SQLException {
         Encounter encounter = new Encounter();

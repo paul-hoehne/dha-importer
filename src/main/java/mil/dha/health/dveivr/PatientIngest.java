@@ -2,12 +2,11 @@ package mil.dha.health.dveivr;
 
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.document.XMLDocumentManager;
-import com.marklogic.client.eval.ServerEvaluationCall;
 import com.marklogic.client.io.DocumentMetadataHandle;
 import com.marklogic.client.io.JAXBHandle;
+import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -16,27 +15,32 @@ import javax.xml.bind.*;
 import java.sql.Types;
 import java.util.List;
 
-@Component("encountersIngest")
-public class EncountersIngest {
+@Component("patientIngest")
+public class PatientIngest {
 
-    Logger log = LoggerFactory.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value("${sql.patients}")
-    String patientSql;
+    private String patientSql;
 
     @Value("${sql.encounters}")
-    String encountersSql;
+    private String encountersSql;
 
     @Value("${transform.xquery}")
-    String xquery;
+    private String xquery;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    private LoadingReportService loadingReportService;
+    private JdbcTemplate jdbcTemplate;
+    private DatabaseClient databaseClient;
 
-    @Autowired
-    DatabaseClient databaseClient;
+    public PatientIngest(@NotNull DatabaseClient databaseClient, @NotNull JdbcTemplate jdbcTemplate,
+                         @NotNull LoadingReportService loadingReportService) {
+        this.databaseClient = databaseClient;
+        this.jdbcTemplate = jdbcTemplate;
+        this.loadingReportService = loadingReportService;
+    }
 
-    public <T> void loadDocument(String uri, String collection, T item, Class<T> inputClass) throws JAXBException {
+    private <T> void loadDocument(String uri, String collection, T item, Class<T> inputClass) throws JAXBException {
         XMLDocumentManager xmlDocumentManager = databaseClient.newXMLDocumentManager();
 
         DocumentMetadataHandle documentMetadataHandle = new DocumentMetadataHandle();
@@ -44,52 +48,60 @@ public class EncountersIngest {
         documentMetadataHandle.getPermissions().add("rest-reader", DocumentMetadataHandle.Capability.READ);
         documentMetadataHandle.getPermissions().add("rest-writer", DocumentMetadataHandle.Capability.UPDATE);
 
-        JAXBHandle<T> jaxbHandle = new JAXBHandle<T>(JAXBContext.newInstance(inputClass));
+        JAXBHandle<T> jaxbHandle = new JAXBHandle<>(JAXBContext.newInstance(inputClass));
         jaxbHandle.set(item);
 
         xmlDocumentManager.write(uri, documentMetadataHandle, jaxbHandle);
     }
 
-    public void processPatient(Patient p) throws JAXBException {
+    private void processPatient(Patient p) throws JAXBException {
         String uri = String.format("/patients/%d.xml", p.getPatientId());
         loadDocument(uri, "patient-raw", p, Patient.class);
-
-        ServerEvaluationCall sec = databaseClient.newServerEval();
-        sec.xquery(xquery);
-        sec.addVariable("uri", String.format("/patients/%d.xml", p.getPatientId()));
-        sec.eval();
     }
 
-    public void processEncounter(Encounter e) throws JAXBException {
+    private  void processEncounter(Encounter e) throws JAXBException {
         String uri = String.format("/encounters/%d.xml", e.getEncounterId());
         loadDocument(uri, "encounter-raw", e, Encounter.class);
-
-        ServerEvaluationCall sec = databaseClient.newServerEval();
-        sec.xquery(xquery);
-        sec.addVariable("uri", String.format("/encounters/%d.xml", e.getEncounterId()));
-        sec.eval();
-
     }
 
     public void run() {
+        LoadingReport loadingReport = new LoadingReport();
+
         List<Patient> patients = jdbcTemplate.query(patientSql, new PatientRowMapper());
         for(Patient p : patients) {
+            PatientImportReport patientImportReport = loadingReport.startPatient(p.getPatientId());
+
             try {
                 processPatient(p);
+
                 Object[] parameters = new Object[]{ p.getPatientId() };
                 int[] types = new int[]{ Types.INTEGER };
 
                 try {
                     List<Encounter> encounters = jdbcTemplate.query(encountersSql, parameters, types, new EncounterRowMapper());
                     for (Encounter e : encounters) {
-                        processEncounter(e);
+                        EncounterImportReport encounterImportReport = patientImportReport.startEncounterImport(e.getEncounterId());
+
+                        try {
+                            processEncounter(e);
+                            encounterImportReport.setSuccess(true);
+                        } catch(Throwable t) {
+                            log.warn(t.getMessage(), t);
+                            encounterImportReport.logException(t);
+                        }
                     }
                 } catch(Throwable t) {
                     log.warn(t.getMessage(), t);
+                    patientImportReport.logException(t);
                 }
+
+                patientImportReport.setPatientSuccess(true);
             } catch(Throwable t) {
                 log.warn(t.getMessage(), t);
+                patientImportReport.logException(t);
             }
         }
+
+        loadingReportService.saveReport(loadingReport);
     }
 }

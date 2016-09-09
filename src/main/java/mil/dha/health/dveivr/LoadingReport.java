@@ -11,7 +11,7 @@ import java.util.UUID;
  * This is a report of what happend when attempting to load data.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-class LoadingReport {
+public class LoadingReport {
     private UUID reportId;
     private Date completedDate;
     private Date cutoffTime;
@@ -21,6 +21,15 @@ class LoadingReport {
 
     public LoadingReport() {
         importReports = new LinkedList<>();
+    }
+
+    public PatientImportReport startPatient(int patientId) {
+        PatientImportReport patientImportReport = new PatientImportReport();
+
+        patientImportReport.setPatientId(patientId);
+        importReports.add(patientImportReport);
+
+        return patientImportReport;
     }
 
     public UUID getReportId() {

@@ -12,7 +12,7 @@ public class Ingest {
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Ingest.class, args);
-        EncountersIngest encountersIngest = (EncountersIngest)ctx.getBean("encountersIngest");
+        PatientIngest encountersIngest = (PatientIngest)ctx.getBean("patientIngest");
 
         encountersIngest.run();
     }
