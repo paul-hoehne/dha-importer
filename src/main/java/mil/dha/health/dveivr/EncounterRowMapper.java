@@ -34,7 +34,7 @@ public class EncounterRowMapper implements RowMapper<Encounter> {
         encounter.setPrimaryClinckStop(rs.getString("primaryclinicstop"));
         encounter.setFollowup(rs.getString("follow_up"));
         encounter.setDuplicate(rs.getString("duplicate"));
-        encounter.setHistoryOfPresentIllnessText(rs.getString("history_of_present_illness_text"));
+        //encounter.setHistoryOfPresentIllnessText(rs.getString("history_of_present_illness_text"));
         encounter.setStandardMaritalStatus(rs.getString("MARITALSTATUS"));
         encounter.setStandardServiceBranch(rs.getString("SERVICEBRANCH"));
         encounter.setServiceStatus(rs.getString("SERVICE_STATUS"));
