@@ -20,6 +20,7 @@ public class LoadingReport {
     private List<PatientImportReport> importReports;
 
     public LoadingReport() {
+        reportId = UUID.randomUUID();
         importReports = new LinkedList<>();
     }
 

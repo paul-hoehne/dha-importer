@@ -38,6 +38,8 @@ public class PatientRowMapper implements RowMapper<Patient> {
         patient.setMilitaryStatus(rs.getString("MILITARY_STATUS"));
         patient.setCategory(rs.getString("CATEGORY"));
         patient.setSuffix(rs.getString("suffix"));
+        patient.setUpdated(rs.getDate("updated"));
+        patient.setCreated(rs.getDate("created"));
 
         return patient;
     }

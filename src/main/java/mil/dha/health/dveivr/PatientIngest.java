@@ -4,12 +4,12 @@ import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.document.XMLDocumentManager;
 import com.marklogic.client.io.DocumentMetadataHandle;
 import com.marklogic.client.io.JAXBHandle;
-import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import javax.xml.bind.*;
 import java.sql.Types;
@@ -33,8 +33,11 @@ public class PatientIngest {
     private JdbcTemplate jdbcTemplate;
     private DatabaseClient databaseClient;
 
-    public PatientIngest(@NotNull DatabaseClient databaseClient, @NotNull JdbcTemplate jdbcTemplate,
-                         @NotNull LoadingReportService loadingReportService) {
+    public PatientIngest(DatabaseClient databaseClient, JdbcTemplate jdbcTemplate, LoadingReportService loadingReportService) {
+        Assert.notNull(databaseClient);
+        Assert.notNull(jdbcTemplate);
+        Assert.notNull(loadingReportService);
+
         this.databaseClient = databaseClient;
         this.jdbcTemplate = jdbcTemplate;
         this.loadingReportService = loadingReportService;
@@ -95,6 +98,7 @@ public class PatientIngest {
                     patientImportReport.logException(t);
                 }
 
+                loadingReport.setCutoffTime(p.getUpdated());
                 patientImportReport.setPatientSuccess(true);
             } catch(Throwable t) {
                 log.warn(t.getMessage(), t);

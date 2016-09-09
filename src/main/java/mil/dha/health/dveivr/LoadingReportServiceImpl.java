@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Service to return the latest report of loaded data.
@@ -61,6 +62,7 @@ public class LoadingReportServiceImpl implements LoadingReportService {
 
     @Override
     public void saveReport(LoadingReport loadingReport) {
+        loadingReport.setCompletedDate(new Date());
         JSONDocumentManager jdm = databaseClient.newJSONDocumentManager();
         JacksonDatabindHandle<LoadingReport> jacksonDatabindHandle = new JacksonDatabindHandle<>(LoadingReport.class);
 

@@ -1,12 +1,12 @@
 package mil.dha.health.dveivr;
 
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 /**
  * Encounter data from the database.
  */
-@XmlType(name="encounter")
+@XmlRootElement(name="encounter")
 public class Encounter {
     private int encounterId;
     private int referralId;

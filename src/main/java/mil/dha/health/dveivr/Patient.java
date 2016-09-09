@@ -1,12 +1,12 @@
 package mil.dha.health.dveivr;
 
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 /**
  * Created by phoehne on 8/12/16.
  */
-@XmlType(name = "patient")
+@XmlRootElement(name = "patient")
 public class Patient {
     private int patientId;
     private String firstName;
@@ -32,6 +32,8 @@ public class Patient {
     private String militaryStatus;
     private String category;
     private String suffix;
+    private Date updated;
+    private Date created;
 
 
     public int getPatientId() {
@@ -224,5 +226,21 @@ public class Patient {
 
     public void setSuffix(String suffix) {
         this.suffix = suffix;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }
