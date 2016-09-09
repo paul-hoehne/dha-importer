@@ -56,8 +56,10 @@ dependencies {
     compile name: 'sqljdbc4'
     compile 'org.codehaus.groovy:groovy:2.4.7'
     compile 'org.codehaus.groovy:groovy-xml:2.4.7'
+    compile 'org.codehaus.groovy:groovy-json:2.4.7'
     testCompile 'org.springframework.boot:spring-boot-test'
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 /**
