@@ -58,12 +58,12 @@ public class PatientIngest {
     }
 
     private void processPatient(Patient p) throws JAXBException {
-        String uri = String.format("/patients/%d.xml", p.getPatientId());
+        String uri = String.format("/patients/raw/%d.xml", p.getPatientId());
         loadDocument(uri, "patient-raw", p, Patient.class);
     }
 
     private  void processEncounter(Encounter e) throws JAXBException {
-        String uri = String.format("/encounters/%d.xml", e.getEncounterId());
+        String uri = String.format("/encounters/raw/%d.xml", e.getEncounterId());
         loadDocument(uri, "encounter-raw", e, Encounter.class);
     }
 
@@ -83,6 +83,7 @@ public class PatientIngest {
                 try {
                     List<Encounter> encounters = jdbcTemplate.query(encountersSql, parameters, types, new EncounterRowMapper());
                     for (Encounter e : encounters) {
+                        e.setPatientId(p.getPatientId());
                         EncounterImportReport encounterImportReport = patientImportReport.startEncounterImport(e.getEncounterId());
 
                         try {

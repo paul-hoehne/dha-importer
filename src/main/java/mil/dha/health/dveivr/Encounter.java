@@ -9,6 +9,7 @@ import java.util.Date;
 @XmlRootElement(name="encounter")
 public class Encounter {
     private int encounterId;
+    private int patientId;
     private int referralId;
     private int providerId;
     private String sta6a;
@@ -48,6 +49,14 @@ public class Encounter {
 
     public void setEncounterId(int encounterId) {
         this.encounterId = encounterId;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public int getReferralId() {
