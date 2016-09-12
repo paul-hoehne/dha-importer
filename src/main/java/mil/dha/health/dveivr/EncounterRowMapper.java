@@ -31,7 +31,7 @@ public class EncounterRowMapper implements RowMapper<Encounter> {
         encounter.setTbiEyeStrainIndicator(rs.getString("tbi_eye_strain_ind"));
         encounter.setTbiBlurredVisionIndicator(rs.getString("tbi_blurred_vision_ind"));
         encounter.setPrimaryClinicStopDescription(rs.getString("primaryclinicstopdesc"));
-        encounter.setPrimaryClinckStop(rs.getString("primaryclinicstop"));
+        encounter.setPrimaryClinicStop(rs.getString("primaryclinicstop"));
         encounter.setFollowup(rs.getString("follow_up"));
         encounter.setDuplicate(rs.getString("duplicate"));
         //encounter.setHistoryOfPresentIllnessText(rs.getString("history_of_present_illness_text"));

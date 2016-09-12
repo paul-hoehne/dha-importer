@@ -28,7 +28,7 @@ public class Encounter {
     private String tbiEyeStrainIndicator;
     private String tbiBlurredVisionIndicator;
     private String primaryClinicStopDescription;
-    private String primaryClinckStop;
+    private String primaryClinicStop;
     private String followup;
     private String duplicate;
     private String standardEncounterType;
@@ -203,12 +203,12 @@ public class Encounter {
         this.primaryClinicStopDescription = primaryClinicStopDescription;
     }
 
-    public String getPrimaryClinckStop() {
-        return primaryClinckStop;
+    public String getPrimaryClinicStop() {
+        return primaryClinicStop;
     }
 
-    public void setPrimaryClinckStop(String primaryClinckStop) {
-        this.primaryClinckStop = primaryClinckStop;
+    public void setPrimaryClinicStop(String primaryClinicStop) {
+        this.primaryClinicStop = primaryClinicStop;
     }
 
     public String getFollowup() {
