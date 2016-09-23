@@ -14,13 +14,9 @@ plugins {
 group 'mil.dha.vce'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'groovy'
-apply plugin: 'application'
 apply plugin: 'spring-boot'
-
-mainClassName = "mil.dha.health.dveivr.Ingest"
 
 sourceCompatibility = 1.8
 
@@ -79,4 +75,11 @@ task importPatientsDoc(type: com.marklogic.gradle.task.MlcpTask) {
     delimited_uri_id = "patient_id"
     args = ["-output_uri_suffix", ".xml", "-transform_module", "/ext/transforms/transform-patient.xqy",
             "-transform_namespace", "http://marklogic.com/dha/example/transform-patient"]
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'mil.dha.health.dveivr.Ingest'
+    }
 }

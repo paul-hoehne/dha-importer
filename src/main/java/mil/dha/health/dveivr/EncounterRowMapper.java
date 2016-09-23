@@ -13,6 +13,7 @@ public class EncounterRowMapper implements RowMapper<Encounter> {
     public Encounter mapRow(ResultSet rs, int rowNum) throws SQLException {
         Encounter encounter = new Encounter();
 
+        encounter.setEncounterId(rs.getInt("encounter_id"));
         encounter.setReferralId(rs.getInt("referral_id"));
         encounter.setProviderId(rs.getInt("provider_id"));
         encounter.setSta6a(rs.getString("sta6a"));
